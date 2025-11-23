@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Центр місій Python</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #b0b0b0;
+            --python-blue: #306998;
+            --python-yellow: #ffd43b;
+            --accent-green: #4caf50;
+            --accent-red: #e53935;
+            --accent-purple: #9c27b0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header with Snake */
+        .header {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #2b2b2b, #1a1a1a);
+            border-bottom: 4px solid var(--python-blue);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .snake-avatar {
+            font-size: 4.5rem;
+            margin-right: 25px;
+            z-index: 2;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .header-text {
+            z-index: 2;
+        }
+
+        .header-text h1 {
+            margin: 0;
+            color: var(--python-yellow);
+            font-size: 1.8rem;
+        }
+
+        .header-text p {
+            margin: 10px 0 0;
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        /* Base Code Section */
+        .base-code-section {
+            background-color: #252526;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 40px;
+            border: 1px dashed var(--text-muted);
+        }
+
+        .copy-hint {
+            color: var(--python-yellow);
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        pre {
+            background-color: #000;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            color: #d4d4d4;
+            margin: 0;
+        }
+
+        /* Mission Cards Grid */
+        .missions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .mission-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            border-top: 5px solid transparent;
+        }
+
+        .mission-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .level-easy { background-color: rgba(76, 175, 80, 0.2); color: var(--accent-green); border-top-color: var(--accent-green); }
+        .level-medium { background-color: rgba(255, 212, 59, 0.2); color: var(--python-yellow); border-top-color: var(--python-yellow); }
+        .level-hard { background-color: rgba(229, 57, 53, 0.2); color: var(--accent-red); border-top-color: var(--accent-red); }
+
+        .mission-card.easy { border-top-color: var(--accent-green); }
+        .mission-card.medium { border-top-color: var(--python-yellow); }
+        .mission-card.hard { border-top-color: var(--accent-red); }
+
+        .mission-title {
+            font-size: 1.3rem;
+            margin: 0 0 15px 0;
+            color: white;
+        }
+
+        .mission-desc {
+            flex-grow: 1;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        /* Hints (Details/Summary) */
+        details {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: auto;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--python-blue);
+            outline: none;
+        }
+
+        .hint-content {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            font-family: monospace;
+            color: #ce9178; /* String color style */
+        }
+
+        /* Action Button */
+        .start-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 40px auto 20px;
+            text-align: center;
+            background-color: var(--python-blue);
+            color: white;
+            padding: 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(48, 105, 152, 0.4);
+            transition: all 0.3s;
+        }
+
+        .start-btn:hover {
+            background-color: #3a7ab0;
+            transform: scale(1.05);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        @media (max-width: 600px) {
+            .header { flex-direction: column; text-align: center; }
+            .snake-avatar { margin-right: 0; margin-bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="snake-avatar">🐍</div>
+        <div class="header-text">
+            <h1>Центр обрання місій</h1>
+            <p>Вітаю, кодере! Пай на зв'язку. Ти вже вмієш створювати вікна та кнопки. Тепер час застосувати знання на практиці. <br><br>Перед тобою три завдання. <strong>Обери ОДНЕ</strong>, яке тобі подобається найбільше, і реалізуй його.</p>
+        </div>
+    </div>
+
+    <div class="base-code-section">
+        <span class="copy-hint">👇 Це твій стартовий шаблон (скопіюй його на сайт):</span>
+<pre>
+from tkinter import *
+
+root = Tk()
+root.title("Моя програма")
+root.geometry("300x200") # Розмір вікна
+
+# Тут створюй свої елементи (Label, Button, Entry)
+
+root.mainloop()
+</pre>
+    </div>
+
+    <div class="missions-grid">
+
+        <div class="mission-card easy">
+            <span class="level-badge level-easy">Рівень: Новачок</span>
+            <h3 class="mission-title">🎨 Місія "Хамелеон"</h3>
+            <div class="mission-desc">
+                Створи програму з написом (Label) та двома кнопками.
+                <ul>
+                    <li>Перша кнопка має змінювати колір фону напису на <strong>червоний</strong>.</li>
+                    <li>Друга кнопка — на <strong>зелений</strong>.</li>
+                </ul>
+                <em>Мета: Навчитись керувати властивостями через bg (background).</em>
+            </div>
+            <details>
+                <summary>Потрібна підказка?</summary>
+                <div class="hint-content">
+                    label.configure(bg="red")<br>
+                    # Створи дві різні функції для кожної кнопки!
+                </div>
+            </details>
+        </div>
+
+        <div class="mission-card medium">
+            <span class="level-badge level-medium">Рівень: Дослідник</span>
+            <h3 class="mission-title">👋 Місія "Ввічливий бот"</h3>
+            <div class="mission-desc">
+                Створи програму, де є поле вводу (Entry) і кнопка "Привітатися".
+                <ul>
+                    <li>Користувач вводить своє ім'я.</li>
+                    <li>При натисканні кнопки напис (Label) змінюється на: <strong>"Привіт, [Ім'я]!"</strong>.</li>
+                </ul>
+                <em>Мета: Попрацювати з отриманням даних.</em>
+            </div>
+            <details>
+                <summary>Потрібна підказка?</summary>
+                <div class="hint-content">
+                    name = entry.get() <br>
+                    label.configure(text="Привіт, " + name)
+                </div>
+            </details>
+        </div>
+
+        <div class="mission-card hard">
+            <span class="level-badge level-hard">Рівень: Профі</span>
+            <h3 class="mission-title">🧮 Місія "Подвоювач"</h3>
+            <div class="mission-desc">
+                Створи міні-калькулятор.
+                <ul>
+                    <li>Користувач вводить число в Entry.</li>
+                    <li>При натисканні кнопки програма множить це число на 2.</li>
+                    <li>Результат виводиться в Label.</li>
+                </ul>
+                <em>Мета: Конвертація тексту в число (int).</em>
+            </div>
+            <details>
+                <summary>Потрібна підказка?</summary>
+                <div class="hint-content">
+                    num = int(entry.get())<br>
+                    res = num * 2<br>
+                    label.configure(text=str(res))
+                </div>
+            </details>
+        </div>
+
+    </div>
+
+    <a href="https://yepython.pp.ua/" target="_blank" class="start-btn">
+        🚀 Перейти до виконання
+    </a>
+
+    <div style="text-align: center; margin-top: 30px; color: var(--text-muted); font-size: 0.9rem;">
+        Пам'ятай: помилки — це просто сходинки до успіху. Удачі!
+    </div>
+
+</div>
+
+</body>
+</html>

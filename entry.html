@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок: Поле введення (Entry)</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #b0b0b0;
+            --python-blue: #306998;
+            --python-yellow: #ffd43b;
+            --accent-purple: #9c27b0;
+            --code-bg: #2b2b2b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #4527a0, #283593);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .snake-avatar {
+            font-size: 4rem;
+            margin-right: 20px;
+            animation: pulse 3s infinite;
+        }
+
+        .header-text h1 {
+            margin: 0;
+            color: var(--python-yellow);
+            font-size: 1.6rem;
+        }
+
+        .header-text p {
+            margin: 5px 0 0;
+            font-size: 1rem;
+        }
+
+        /* Theory Section */
+        .section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--python-blue);
+        }
+
+        h2 { color: var(--python-blue); margin-top: 0; }
+        h3 { color: var(--text-main); font-size: 1.1rem; border-bottom: 1px solid #444; padding-bottom: 5px; margin-top: 20px;}
+
+        /* Code Styling */
+        pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 0.95rem;
+            border: 1px solid #444;
+        }
+        
+        .code-keyword { color: #cc7832; font-weight: bold; } /* Orange for keywords */
+        .code-string { color: #6a8759; } /* Green for strings */
+        .code-func { color: #ffc66d; } /* Yellow for functions */
+        .code-comment { color: #808080; font-style: italic; }
+
+        /* Visualization Box */
+        .visual-concept {
+            background-color: rgba(48, 105, 152, 0.1);
+            border: 1px dashed var(--python-blue);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .visual-concept span {
+            font-weight: bold;
+            color: var(--python-yellow);
+        }
+
+        /* Mission Section */
+        .mission {
+            background-color: #2e2e2e;
+            border: 2px solid var(--python-yellow);
+        }
+
+        .mission h2 { color: var(--python-yellow); }
+
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+        .task-list li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        .task-list li::before {
+            content: "👉";
+            position: absolute;
+            left: 0;
+        }
+
+        .action-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: var(--python-yellow);
+            color: #000;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        .action-btn:hover {
+            transform: scale(1.02);
+            background-color: #ffeb3b;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 600px) {
+            .header { flex-direction: column; text-align: center; }
+            .snake-avatar { margin-right: 0; margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="snake-avatar">🐍</div>
+        <div class="header-text">
+            <h1>Тема: Поле введення</h1>
+            <p>Привіт! Це знову Пай. Сьогодні ми навчимо твою програму не тільки говорити, а й <strong>слухати</strong>. Ми створимо поле, в яке можна писати текст!</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📚 Теорія за 2 хвилини</h2>
+        <p>Щоб користувач міг щось написати у програмі, використовують віджет <strong>Entry</strong> (вхід).</p>
+        
+        <div class="visual-concept">
+            Entry — це як поштова скринька 📮. <br>
+            Щоб дістати звідти лист (текст), треба використати команду <span>.get()</span>
+        </div>
+
+        <h3>Приклад коду:</h3>
+        <pre>
+<span class="code-keyword">from</span> tkinter <span class="code-keyword">import</span> *
+
+root = Tk()
+root.title(<span class="code-string">"Тест поля"</span>)
+
+<span class="code-comment"># 1. Створюємо поле для введення (width - це ширина)</span>
+my_entry = Entry(root, width=20)
+my_entry.pack()
+
+<span class="code-comment"># 2. Створюємо напис, куди виведемо результат</span>
+label = Label(root, text=<span class="code-string">"Тут з'явиться текст"</span>)
+label.pack()
+
+<span class="code-comment"># 3. Функція, яка забирає текст з поля</span>
+<span class="code-keyword">def</span> <span class="code-func">show_message</span>():
+    <span class="code-comment"># command .get() бере текст з my_entry</span>
+    text_from_box = my_entry.get()
+    
+    <span class="code-comment"># Міняємо напис на те, що взяли</span>
+    label.configure(text=text_from_box)
+
+<span class="code-comment"># 4. Кнопка, яка запускає функцію</span>
+btn = Button(root, text=<span class="code-string">"Прочитати"</span>, command=show_message)
+btn.pack()
+
+root.mainloop()
+</pre>
+    </div>
+
+    <div class="section mission">
+        <h2>🛠️ Твоя Місія: "Електронний Папуга"</h2>
+        <p>Тобі потрібно створити програму, яка повторює за тобою. Це дуже просто, якщо використати код вище як основу.</p>
+
+        <h3>Що треба зробити:</h3>
+        <ul class="task-list">
+            <li>Скопіюй приклад коду з теорії (вище) і встав його на сайті.</li>
+            <li>Запусти і перевір, як він працює (напиши щось і натисни кнопку).</li>
+            <li><strong>Зміни код:</strong> зроби так, щоб програма додавала фразу <em>"Ти сказав: "</em> перед твоїм текстом.</li>
+        </ul>
+
+        <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; margin-top: 15px;">
+            <p style="margin: 0; font-size: 0.9rem; color: #bbb;">💡 <strong>Підказка:</strong> Тобі потрібно змінити лише один рядок у функції:</p>
+            <code style="color: var(--python-yellow);">label.configure(text="Ти сказав: " + text_from_box)</code>
+        </div>
+
+        <a href="https://yepython.pp.ua/" target="_blank" class="action-btn">
+            Відкрити редактор коду
+        </a>
+    </div>
+
+    <div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 30px;">
+        Успіхів! Пай чекає на твій код 🐍
+    </div>
+    
+    <a href="prac.html">Попередній урок</a>
+    <a href="#">Наступний урок</a>
+
+</div>
+
+</body>
+</html>

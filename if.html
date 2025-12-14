@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Урок: Розгалуження (if/else)</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #b0b0b0;
+            --python-blue: #306998;
+            --python-yellow: #ffd43b;
+            --accent-green: #4caf50;
+            --accent-red: #f44336;
+            --accent-orange: #ff9800;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #2b32b2, #1488cc);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            border-bottom: 4px solid var(--python-yellow);
+        }
+
+        .snake-avatar {
+            font-size: 4.5rem;
+            margin-right: 25px;
+            animation: nod 2s infinite ease-in-out;
+        }
+
+        .header-text h1 {
+            margin: 0;
+            color: var(--python-yellow);
+            font-size: 1.8rem;
+        }
+
+        .header-text p {
+            margin: 10px 0 0;
+            font-size: 1.1rem;
+        }
+
+        /* --- SECTIONS --- */
+        .section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--python-blue);
+        }
+
+        h2 { color: var(--python-blue); margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        
+        /* --- CODE BLOCKS --- */
+        pre {
+            background-color: #111;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+            color: #d4d4d4;
+            border: 1px solid #444;
+        }
+        .kw { color: #cc7832; font-weight: bold; } /* Keyword: if, else */
+        .str { color: #6a8759; } /* String */
+        .num { color: #6897bb; } /* Number */
+        .comment { color: #808080; font-style: italic; }
+
+        /* --- TASKS GRID --- */
+        .tasks-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .task-card {
+            background-color: #252526;
+            border-radius: 10px;
+            padding: 20px;
+            border-top: 5px solid #555;
+            transition: transform 0.2s;
+        }
+        
+        .task-card:hover { transform: translateY(-5px); }
+        .task-card.easy { border-top-color: var(--accent-green); }
+        .task-card.medium { border-top-color: var(--accent-orange); }
+        .task-card.hard { border-top-color: var(--accent-red); }
+
+        .task-title { font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; display: block; }
+        
+        /* --- HINTS --- */
+        details {
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        summary { cursor: pointer; color: var(--python-yellow); outline: none; }
+        .hint-text { margin-top: 10px; font-family: monospace; font-size: 0.9rem; color: #a9b7c6; }
+
+        /* --- CHECKLIST --- */
+        .checklist { list-style: none; padding: 0; }
+        .checklist li {
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .checklist li::before {
+            content: "❓";
+            margin-right: 10px;
+        }
+
+        /* --- BUTTON --- */
+        .run-btn {
+            display: block;
+            background-color: var(--python-blue);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .run-btn:hover { background-color: #265a88; }
+
+        @keyframes nod {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        @media (max-width: 600px) {
+            .header { flex-direction: column; text-align: center; }
+            .snake-avatar { margin-right: 0; margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- 1. HEADER -->
+    <div class="header">
+        <div class="snake-avatar">🐍</div>
+        <div class="header-text">
+            <h1>Привіт! Пай на зв'язку.</h1>
+            <p>Сьогодні ми навчимо комп'ютер приймати рішення. У житті ти постійно робиш вибір: <em>"Якщо йде дощ — беру парасольку, інакше — йду в кепці"</em>. Програми працюють так само!</p>
+        </div>
+    </div>
+
+    <!-- 2. THEORY -->
+    <div class="section">
+        <h2>🧠 Як це працює? (Теорія)</h2>
+        <p>Для прийняття рішень у Python є три чарівні слова:</p>
+        <ul>
+            <li><strong>if</strong> (якщо) — перевіряє умову.</li>
+            <li><strong>else</strong> (інакше) — спрацьовує, якщо умова НЕ виконалася.</li>
+            <li><strong>elif</strong> (інакше якщо) — додаткова перевірка.</li>
+        </ul>
+
+        <h3>Приклад з реального життя (Магазин):</h3>
+        <pre>
+money = 50  <span class="comment"># У тебе є 50 грн</span>
+
+<span class="kw">if</span> money >= 100:
+    print(<span class="str">"Купую велику піцу! 🍕"</span>)
+<span class="kw">else</span>:
+    print(<span class="str">"Купую булочку з маком... 🥐"</span>)
+</pre>
+
+        <div style="background-color: rgba(244, 67, 54, 0.1); border: 1px solid var(--accent-red); padding: 15px; border-radius: 8px; margin-top: 15px;">
+            <strong>⚠️ Увага! Головне правило Python:</strong><br>
+            Після слів <code>if</code> та <code>else</code> треба ставити двокрапку <code>:</code><br>
+            Наступний рядок обов'язково має мати <strong>ВІДСТУП</strong> (натисни клавішу Tab або просто постав чотири пробіли). Без відступу магії не буде!
+        </div>
+    </div>
+
+    <!-- 3. PRACTICE (3 TASKS) -->
+    <div class="section">
+        <h2>🛠️ Твоя черга! (Практика)</h2>
+        <p>Обери <strong>ОДНЕ</strong> завдання, яке тобі подобається, і напиши для нього код.</p>
+
+        <div class="tasks-container">
+            
+            <!-- Task 1 -->
+            <div class="task-card easy">
+                <span class="task-title" style="color: var(--accent-green);">1. Фейс-контроль (Пароль)</span>
+                <p>Напиши програму, яка просить ввести пароль.</p>
+                <ul>
+                    <li>Якщо пароль <strong>"1234"</strong> — пиши "Доступ дозволено ✅".</li>
+                    <li>Інакше — пиши "Помилка доступу ❌".</li>
+                </ul>
+                <details>
+                    <summary>Підказка</summary>
+                    <div class="hint-text">
+                        password = input("Введи пароль: ")<br>
+                        if password == "1234":<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;print("Ок")<br>
+                        else:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;print("Ні")
+                    </div>
+                </details>
+            </div>
+
+            <!-- Task 2 -->
+            <div class="task-card medium">
+                <span class="task-title" style="color: var(--accent-orange);">2. Що вдягнути? (Погода)</span>
+                <p>Програма запитує температуру на вулиці (число).</p>
+                <ul>
+                    <li>Якщо менше 10 градусів — "Одягай шапку 🧣".</li>
+                    <li>Інакше — "Можна без шапки 😎".</li>
+                </ul>
+                <details>
+                    <summary>Підказка</summary>
+                    <div class="hint-text">
+                        temp = int(input("Скільки градусів? "))<br>
+                        if temp < 10:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;# твій код тут<br>
+                        else:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;# твій код тут
+                    </div>
+                </details>
+            </div>
+
+            <!-- Task 3 -->
+            <div class="task-card hard">
+                <span class="task-title" style="color: var(--accent-red);">3. Шкільний бот (Оцінки)</span>
+                <p>Програма запитує оцінку (від 1 до 12).</p>
+                <ul>
+                    <li>Якщо оцінка від 10 до 12 — "Ти супер! 🏆"</li>
+                    <li>Якщо від 6 до 9 — "Добре, але можна краще 👍"</li>
+                    <li>Інакше — "Треба повчити... 📚"</li>
+                </ul>
+                <details>
+                    <summary>Підказка (тут потрібен elif)</summary>
+                    <div class="hint-text">
+                        mark = int(input("Оцінка: "))<br>
+                        if ...:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;print("Супер")<br>
+                        elif ...:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;print("Норм")<br>
+                        else:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;print("Вчи!")
+                    </div>
+                </details>
+            </div>
+
+        </div>
+
+        <a href="https://yepython.pp.ua/" target="_blank" class="run-btn">
+            Відкрити редактор коду
+        </a>
+    </div>
+
+    <!-- 4. SELF-CHECK -->
+    <div class="section">
+        <h2>🧐 Самоперевірка</h2>
+        <p>Перед тим як закрити урок, дай відповідь (собі) на ці питання:</p>
+        <ul class="checklist">
+            <li>Який знак ставиться в кінці рядка з if? (Крапка чи двокрапка?)</li>
+            <li>Скільки знаків "дорівнює" треба для порівняння? (= чи == ?)</li>
+            <li>Чи зробив я відступ (Tab) всередині блоку if?</li>
+        </ul>
+    </div>
+
+    <div style="text-align: center; color: var(--text-muted); margin-top: 20px;">
+        © 2025 Курс "Python для 8 класу"
+    
+        <a href="logika.html">Попередній урок</a>
+        <a href="#">Наступний урок</a>
+    </div>
+
+</div>
+
+</body>
+</html>
